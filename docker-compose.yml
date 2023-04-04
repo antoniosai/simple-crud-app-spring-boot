@@ -1,0 +1,25 @@
+version: "3.8"
+services:
+  masterservice:
+    image: antoniosai/simple-crud-app:1.0.0
+    build: .
+    ports:
+      - "8001:8001"
+    restart: always
+    depends_on:
+      - dbapp
+    networks:
+      - simple-crud-application
+  dbapp:
+    image: postgres:15.1
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_PASSWORD=myverystrongpassword
+      - POSTGRES_USER=username
+      - POSTGRES_DB=simplecrudapp
+    networks:
+      - simple-crud-application
+networks:
+  simple-crud-application:
