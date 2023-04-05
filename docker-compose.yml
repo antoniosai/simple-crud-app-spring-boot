@@ -1,6 +1,6 @@
 version: "3.8"
 services:
-  masterservice:
+  simplecrudapp:
     image: antoniosai/simple-crud-app:1.0.0
     build: .
     ports:
@@ -9,17 +9,22 @@ services:
     depends_on:
       - dbapp
     networks:
-      - simple-crud-application
+      - simpleappnetwork
+    environment:
+      spring.datasource.url: jdbc:postgresql://dbapp:5432/postgres
+      spring.datasource.username: admin
+      spring.datasource.password: admin
+      spring.jpa.hibernate.ddl.auto: create
   dbapp:
     image: postgres:15.1
     restart: always
     ports:
-      - "5432:5432"
+      - "5433:5432"
     environment:
-      - POSTGRES_PASSWORD=myverystrongpassword
-      - POSTGRES_USER=username
-      - POSTGRES_DB=simplecrudapp
+      - POSTGRES_PASSWORD=admin
+      - POSTGRES_USER=admin
+      - POSTGRES_DB=postgres
     networks:
-      - simple-crud-application
+      - simpleappnetwork
 networks:
-  simple-crud-application:
+  simpleappnetwork:
